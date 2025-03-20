@@ -1,47 +1,39 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import Dashboard from './components/Dashboard.vue'
+import Browser from './components/Browser.vue'
+
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <div>
+    <header>
+      <h1>Inventory Home</h1>
+      <div>
+        <ul class="nav">
+          <li class="nav-item">
+            <button @click="goToDashboard" class="nav-link btn btn-light">
+              Add/Remove from Database
+            </button>
+          </li>
+          <li class="nav-item">
+            <button @click="toggleInventory" class="nav-link btn btn-light" id="inv">
+              View All Inventory
+            </button>
+          </li>
+        </ul>
+      </div>
+      
+    </header>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+    <main>
+      <Dashboard />
+      <Browser />
+    </main>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+  h1{
+    padding: 25px;
   }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>
