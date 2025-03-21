@@ -4,18 +4,27 @@
     <div class="main">
       
   
-      <form @submit.prevent="submitForm">
+      <form @submit.prevent="addItem">
         <div class="mb-3">
-          <label class="form-label">Enter SKU #:</label>
+          <label class="form-label">Name:</label>
           <input 
-            v-model="skuNumber"
+            v-model="name"
+            class="form-control"
+            type="text"
+            placeholder="Enter Name"
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">SKU #:</label>
+          <input 
+            v-model="bar_code"
             class="form-control"
             type="text"
             placeholder="Enter SKU number"
           />
         </div>
         <div class="mb-3">
-          <label class="form-label">Enter Quantity:</label>
+          <label class="form-label">Quantity:</label>
           <input 
             v-model="quantity"
             class="form-control"
@@ -23,60 +32,87 @@
             placeholder="Enter quantity"
           />
         </div>
-
         <div class="mb-3">
-          <input v-model="action" type="radio" id="addQuantity" value="add" class="form-check-input"/>
-          <label class="form-check-label" for="addQuantity">Add Quantity</label>
+          <label class="form-label">Price:</label>
+          <input
+            v-model="price"
+            class="form-control"
+            type="number"
+            placeholder="Enter Price"
+          />
         </div>
-
         <div class="mb-3">
-          <input v-model="action" type="radio" id="removeQuantity" value="remove" class="form-check-input"/>
-          <label class="form-check-label" for="removeQuantity">Remove Quantity</label>
+          <label class="form-label">Location in Store:</label>
+          <input
+            v-model="locationInStore"
+            class="form-control"
+            type="text"
+            placeholder="Enter Location"
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Dimensions:</label>
+          <input
+            v-model="dimensions"
+            class="form-control"
+            type="text"
+            placeholder="Enter the Dimensions"
+          />
+        </div>
+        <div class="mb-3 ">
+          <label class="form-label">Desciption:</label>
+          <input 
+            v-model="description"
+            class="form-control"
+            type="text"
+            placeholder="Enter a Desription"
+          />
         </div>
   
         <button type="submit" class="btn btn-info">Submit</button>
       </form>
-        <div class="inv">
+        <!-- <div class="inv">
             <h3 class="mt-4">Current Inventory:</h3>
             <ul class="list-group">
                 <li v-for="(quantity, sku) in inventory" :key="sku" class="list-group-item">
           SKU #{{ sku }} - Quantity: {{ quantity }}
                 </li>
             </ul>
-        </div>
+        </div> -->
     </div>
 
   </template>
   
-  <script setup>
-  import { ref } from 'vue';
+  <script>
+     import axios from 'axios'
+     export default {
+      data(){
+        return{
+          name: "",
+          bar_code: "",
+          quantity: 0,
+          price: 0,
+          locationInStore: "",
+          dimensions:"",
+          description: "",
+        };
+      },
+      methods: {
+        async addItem() {
+          let newItem = axios.post('http://localhost:3000/api/items/add-item',{
+          name: this.name,
+          bar_code: this.bar_code,
+          quantity: this.quantity,
+          price: this.price,
+          locationInStore: this.locationInStore,
+          dimensions: this.dimensions,
+          description: this.description,
+          });
+        console.warn(newItem);
+        },
+      },
+     };
   
-  const skuNumber = ref('');
-  const quantity = ref(0);
-  const action = ref('add');
-  const inventory = ref({});
-  const submitForm = () => {
-    if (skuNumber.value && quantity.value > 0) {
-      if (action.value === 'add') {
-        if (inventory.value[skuNumber.value]) {
-          inventory.value[skuNumber.value] += parseInt(quantity.value);
-        } else {
-          inventory.value[skuNumber.value] = parseInt(quantity.value);
-        }
-      } else if (action.value === 'remove') {
-        if (inventory.value[skuNumber.value]) {
-          inventory.value[skuNumber.value] -= parseInt(quantity.value);
-          if (inventory.value[skuNumber.value] < 0) {
-            inventory.value[skuNumber.value] = 0;
-          }
-        }
-      }
-    }
-  
-    skuNumber.value = '';
-    quantity.value = 0;
-    action.value = 'add';
-  };
   </script>
   
   <style scoped>
