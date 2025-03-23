@@ -1,6 +1,6 @@
 <script setup>
 import Dashboard from './components/Dashboard.vue'
-//import Browser from './components/Browser.vue'
+
 
 </script>
 
@@ -13,7 +13,7 @@ import Dashboard from './components/Dashboard.vue'
 
     <main>
       <Dashboard />
-      <!-- <Browser /> -->
+      
     </main>
   </div>
 </template>
