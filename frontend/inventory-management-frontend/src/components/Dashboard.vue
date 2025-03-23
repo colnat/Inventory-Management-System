@@ -35,7 +35,7 @@
       </div>
 
       <button type="submit" class="btn btn-info">Submit</button>
-      
+      <button class="btn btn-info" v-if="updating" @click="emptyForm()" >Cancel</button>
     </form>
     <div>
       <h1>Current Items</h1>
@@ -90,6 +90,7 @@ export default {
         });
         console.log("Item was added succesfully", newItem.data);
         this.getItems();
+        this.emptyForm();
       } catch (error) {
         console.log("Error adding item,", error);
       }
@@ -128,13 +129,13 @@ export default {
           description: this.description,
         });
         this.getItems();
+        this.emptyForm();
       } catch (error) {
         console.log("Error updating item", error);
       }
     },
 
     itemToUpdate(item){
-      console.log(item)
       this.name=item.name,
       this.bar_code=item.bar_code,
       this.quantity=item.quantity,
@@ -142,9 +143,21 @@ export default {
       this.locationInStore=item.locationInStore,
       this.dimensions=item.dimensions,
       this.description=item.description,
-      this.itemId=item._id
+      this.itemId=item._id,
       this.updating=true
     },
+
+    emptyForm(){
+      this.name="",
+      this.bar_code="",
+      this.quantity=0,
+      this.price=0,
+      this.locationInStore="",
+      this.dimensions="",
+      this.description="",
+      this.itemId=null,
+      this.updating=false
+    }
   },
 };
 
