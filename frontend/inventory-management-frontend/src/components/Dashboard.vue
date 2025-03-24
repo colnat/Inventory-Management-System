@@ -9,6 +9,7 @@
         <label class="form-label">Name:</label>
         <input v-model="name" class="form-control" type="text" placeholder="Enter Name" />
       </div>
+      
       <div class="mb-3">
         <label class="form-label">SKU #:</label>
         <input v-model="bar_code" class="form-control" type="text" placeholder="Enter SKU number" />
