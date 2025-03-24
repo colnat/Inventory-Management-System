@@ -1,17 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Dashboard from '../components/Dashboard.vue';
-import Browser from '../components/Browser.vue';
 
 const routes = [
   {
     path: '/',
     name: 'Dashboard',
     component: Dashboard,
-  },
-  {
-    path: '/browser',
-    name: 'Browser',
-    component: Browser, 
   },
 ];
 
