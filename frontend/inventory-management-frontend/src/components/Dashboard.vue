@@ -1,109 +1,66 @@
 <template>
+
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  </head>
   <div class="bg-black text-white min-vh-100 p-4">
     <div class="container">
-      <!-- Form Container -->
-      <div
-        class="bg-info text-black p-4 rounded shadow mb-5"
-        style="max-width: 700px; margin: auto"
-      >
+      
+      <div class="bg-info text-black p-4 rounded shadow mb-5" style="max-width: 700px; margin: auto">
         <h1 class="text-center text-white mb-4">Inventory Home</h1>
 
         <form @submit.prevent="updating ? updateItem() : addItem()">
           <div class="mb-3">
             <label class="form-label">Name:</label>
-            <input
-              v-model="name"
-              class="form-control"
-              type="text"
-              placeholder="Enter Name"
-            />
+            <input v-model="name" class="form-control" type="text" placeholder="Enter Name" />
           </div>
 
           <div class="mb-3">
             <label class="form-label">SKU #:</label>
-            <input
-              v-model="bar_code"
-              class="form-control"
-              type="text"
-              placeholder="Enter SKU number"
-            />
+            <input v-model="bar_code" class="form-control" type="text" placeholder="Enter SKU number" />
           </div>
 
           <div class="mb-3">
             <label class="form-label">Quantity:</label>
-            <input
-              v-model="quantity"
-              class="form-control"
-              type="number"
-              placeholder="Enter quantity"
-            />
+            <input v-model="quantity" class="form-control" type="number" placeholder="Enter quantity" />
           </div>
 
           <div class="mb-3">
             <label class="form-label">Price:</label>
-            <input
-              v-model="price"
-              class="form-control"
-              type="number"
-              step=".01"
-              min="0"
-              placeholder="Enter Price"
-            />
+            <input v-model="price" class="form-control" type="number" step=".01" min="0" placeholder="Enter Price" />
           </div>
 
           <div class="mb-3">
             <label class="form-label">Location in Store:</label>
-            <input
-              v-model="locationInStore"
-              class="form-control"
-              type="text"
-              placeholder="Enter Location"
-            />
+            <input v-model="locationInStore" class="form-control" type="text" placeholder="Enter Location" />
           </div>
 
           <div class="mb-3">
             <label class="form-label">Dimensions:</label>
-            <input
-              v-model="dimensions"
-              class="form-control"
-              type="text"
-              placeholder="Enter the Dimensions"
-            />
+            <input v-model="dimensions" class="form-control" type="text" placeholder="Enter the Dimensions" />
           </div>
 
           <div class="mb-3">
             <label class="form-label">Description:</label>
-            <input
-              v-model="description"
-              class="form-control"
-              type="text"
-              placeholder="Enter a Description"
-            />
+            <input v-model="description" class="form-control" type="text" placeholder="Enter a Description" />
           </div>
 
           <div class="d-grid gap-2">
             <button type="submit" class="btn btn-dark">Submit</button>
-            <button
-              v-if="updating"
-              type="button"
-              class="btn btn-secondary"
-              @click="emptyForm()"
-            >
+            <button v-if="updating" type="button" class="btn btn-secondary" @click="emptyForm()">
               Cancel
             </button>
           </div>
         </form>
       </div>
 
-      <!-- Item List -->
+      
       <div class="container mt-5">
         <h2 class="text-white text-center mb-4">Current Items</h2>
         <div class="row g-4">
-          <div
-            v-for="item in items"
-            :key="item._id"
-            class="col-12 col-md-6 col-lg-4"
-          >
+          <input type="text" placeholder="Search..." v-model="search" />
+          <div v-for="item in filteredItems()" :key="item._id" class="col-12 col-md-6 col-lg-4">
             <div class="card bg-light text-dark shadow-sm h-100">
               <div class="card-body">
                 <h5 class="card-title fw-bold">{{ item.name }}</h5>
@@ -119,16 +76,10 @@
                 </p>
               </div>
               <div class="card-footer d-flex justify-content-between">
-                <button
-                  class="btn btn-sm btn-danger"
-                  @click="deleteItem(item._id)"
-                >
+                <button class="btn btn-sm btn-danger" @click="deleteItem(item._id)">
                   Delete
                 </button>
-                <button
-                  class="btn btn-sm btn-primary"
-                  @click="itemToUpdate(item)"
-                >
+                <button class="btn btn-sm btn-primary" @click="itemToUpdate(item)">
                   Update
                 </button>
               </div>
@@ -136,7 +87,7 @@
           </div>
         </div>
       </div>
-      <!-- End Item List -->
+      
     </div>
   </div>
 </template>
@@ -157,6 +108,7 @@ export default {
       itemId: "",
       updating: false,
       items: [],
+      search: "",
     };
   },
 
@@ -167,7 +119,7 @@ export default {
   methods: {
     async addItem() {
       try {
-        let newItem = await axios.post(
+       await axios.post(
           "http://localhost:3000/api/items/add-item",
           {
             name: this.name,
@@ -225,6 +177,12 @@ export default {
       } catch (error) {
         console.log("Error updating item", error);
       }
+    },
+
+    filteredItems() {
+      return this.items.filter((item) =>
+        item.name.toLowerCase().includes(this.search.toLowerCase())
+      );
     },
 
     itemToUpdate(item) {
