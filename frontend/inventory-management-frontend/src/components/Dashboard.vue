@@ -57,36 +57,74 @@
 
       
       <div class="container mt-5">
-        <h2 class="text-white text-center mb-4">Current Items</h2>
-        <div class="row g-4">
-          <input type="text" placeholder="Search..." v-model="search" />
-          <div v-for="item in filteredItems()" :key="item._id" class="col-12 col-md-6 col-lg-4">
-            <div class="card bg-light text-dark shadow-sm h-100">
-              <div class="card-body">
-                <h5 class="card-title fw-bold">{{ item.name }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">
-                  SKU: {{ item.bar_code }}
-                </h6>
-                <p class="card-text">
-                  <strong>Quantity:</strong> {{ item.quantity }}<br />
-                  <strong>Price:</strong> ${{ item.price }}<br />
-                  <strong>Location:</strong> {{ item.locationInStore }}<br />
-                  <strong>Dimensions:</strong> {{ item.dimensions }}<br />
-                  <strong>Description:</strong> {{ item.description }}
-                </p>
-              </div>
-              <div class="card-footer d-flex justify-content-between">
-                <button class="btn btn-sm btn-danger" @click="deleteItem(item._id)">
-                  Delete
-                </button>
-                <button class="btn btn-sm btn-primary" @click="itemToUpdate(item)">
-                  Update
-                </button>
-              </div>
-            </div>
-          </div>
+  <h2 class="text-white text-center mb-4">Current Items</h2>
+
+  <div class="search-bar-wrapper">
+  <div class="search-pill-multi justify-between">
+
+    <!-- Left: Name Input -->
+    <div class="search-section search-name">
+      <label>Name</label>
+      <input type="text" v-model="searchName" placeholder="e.g. Monitor" />
+    </div>
+
+    <!-- Right: Quantity, Location, Dimensions + Search Icon -->
+    <div class="d-flex gap-2 align-center">
+      <div class="search-section small">
+        <label>Qty</label>
+        <input type="number" v-model="searchQuantity" placeholder="5" />
+      </div>
+
+      <div class="search-section small">
+        <label>Loc</label>
+        <input type="text" v-model="searchLocation" placeholder="Loc" />
+      </div>
+
+      <div class="search-section small">
+        <label>Dim</label>
+        <input type="text" v-model="searchDimensions" placeholder="50x50" />
+      </div>
+
+      <button class="search-icon-btn" @click="filterByFields">🔍</button>
+    </div>
+
+  </div>
+</div>
+
+  <!-- ✅ START ROW HERE -->
+  <div class="row gx-4 px-3">
+    <div
+      v-for="item in filteredItems()"
+      :key="item._id"
+      class="col-12 col-md-6 col-lg-4 mb-4"
+    >
+      <div class="card bg-light text-dark shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title fw-bold">{{ item.name }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">
+            SKU: {{ item.bar_code }}
+          </h6>
+          <p class="card-text">
+            <strong>Quantity:</strong> {{ item.quantity }}<br />
+            <strong>Price:</strong> ${{ item.price }}<br />
+            <strong>Location:</strong> {{ item.locationInStore }}<br />
+            <strong>Dimensions:</strong> {{ item.dimensions }}<br />
+            <strong>Description:</strong> {{ item.description }}
+          </p>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <button class="btn btn-sm btn-danger" @click="deleteItem(item._id)">
+            Delete
+          </button>
+          <button class="btn btn-sm btn-primary" @click="itemToUpdate(item)">
+            Update
+          </button>
         </div>
       </div>
+    </div>
+  </div>
+  <!-- ✅ END ROW -->
+</div>
       
     </div>
   </div>
@@ -211,3 +249,75 @@ export default {
   },
 };
 </script>
+<style scoped>
+.search-wrapper {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.search-bar-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.search-pill-multi {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 4px 12px;
+  max-width: 1000px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.search-section {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px;
+  flex: 1;
+  min-width: 150px;
+}
+
+.search-section label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 2px;
+}
+
+.search-section input {
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  padding: 6px 8px;
+  width: 100%;
+  background-color: transparent;
+}
+
+.divider {
+  height: 36px;
+  width: 1px;
+  background: #ddd;
+}
+
+.search-icon-btn {
+  background-color: #ff385c;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  margin-left: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.search-icon-btn:hover {
+  background-color: #e11d48;
+}
+
+
+</style>
